@@ -1,0 +1,61 @@
+[
+  {
+    "categoryName": "Signature Smoothies",
+    "products": [
+      {
+        "id": "66215c4f74ee6e5fe3e08aa2",
+        "name": "Smoothie Summer Vibes (500ml): Açaí, maracujá e morango",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Maracujá e morango – Foto ilustrativa.",
+        "priceCents": 3799,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/4a049d62-e93a-4f9b-9a1a-ed3e61250618-low.jpg"
+      },
+      {
+        "id": "66215c4f74ee6e5fe3e08aa3",
+        "name": "Smoothie Berry Fusion (500ml): Açaí, morango e leite Ninho",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Morango e leite Ninho – Foto ilustrativa.",
+        "priceCents": 3449,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/1cd2a44e-3acd-4925-82c6-8fc0894a47d9-low.jpg"
+      },
+      {
+        "id": "66215c4f74ee6e5fe3e08aa4",
+        "name": "Smoothie Power Punch (500ml): Açaí, paçoca, whey e banana",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Paçoca, whey protein e banana – Foto ilustrativa.",
+        "priceCents": 3500,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/4a405a9f-147f-4197-bd77-b08036c5ba7b-low.jpg"
+      },
+      {
+        "id": "66215c4f74ee6e5fe3e08aa5",
+        "name": "Smoothie Pb Lovers (500ml): Açaí, paçoca, pasta de amendoim com mel e banana",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Paçoca, pasta de amendoim com mel e banana – Foto ilustrativa.",
+        "priceCents": 3499,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/e9d86a07-ea1a-413e-b02f-c8fcb3e16c14-low.jpg"
+      },
+      {
+        "id": "66215c4f74ee6e5fe3e08aa6",
+        "name": "Smoothie Nest.Oak (500ml): Açaí, neston, banana e morango",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Neston, banana e morango – Foto ilustrativa.",
+        "priceCents": 3449,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/442e9f9d-2a99-41b2-84ee-f7bca1efbacf-low.jpg"
+      },
+      {
+        "id": "66215c4f74ee6e5fe3e08aa7",
+        "name": "Smoothie Oak Preferido (500ml): Açaí, leite Ninho e leite condensado",
+        "description": "Açaí 500 ml: smoothie com textura mais cremosa para tomar com canudo. Toppings do copo: Leite Ninho e leite condensado – Foto ilustrativa.",
+        "priceCents": 2999,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/d93e8edd-91a1-4374-aec6-541ba20e97a4-low.jpg"
+      }
+    ]
+  },
+  {
+    "categoryName": "Oak To Go",
+    "products": [
+      {
+        "id": "66215c4f74ee6e5fe3e08aa9",
+        "name": "Oakberry Açaí Consumo Imediato (850ml)",
+        "description": "Pote de açaí 850ml: Zero xarope, corante, colesterol e gordura trans. Desfrute o açaí Oakberry no conforto de sua casa. Consumo imediato. - foto ilustrativa",
+        "priceCents": 5599,
+        "image": "https://assets.diggy.menu/menu/6400ccb38ab837d761451396/products/5fde0556-475b-46dd-b21a-211a38a81b23-low.jpg"
+      }
+    ]
+  }
+]
