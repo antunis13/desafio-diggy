@@ -12,6 +12,7 @@ export default function Cart() {
     price: number;
     image: string;
     description: string;
+    quantity: number;
   }
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function Cart() {
             priceCents={item.price}
             isHomePage={false}
             onDelete={deleteProduct}
+            quantity={item.quantity}
           />
         ))
       )}

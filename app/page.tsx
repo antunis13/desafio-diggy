@@ -2,30 +2,53 @@
 
 import ProductCard from "@/components/ProductCard";
 import categorias from "@/data/products.json";
+
+interface CartItem {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+  quantity: number;
+}
+
 export default function Home() {
   const addProducts = (
     id: string,
     name: string,
     img: string,
     desc: string,
-    price: number
+    price: number,
+    quantity?: number
   ) => {
-    const cartProduct = {
-      id: id,
-      name: name,
+    const qty = quantity ?? 1;
+    const cartProduct: CartItem = {
+      id,
+      name,
       image: img,
       description: desc,
-      price: price,
+      price,
+      quantity: qty,
     };
 
     const stored = localStorage.getItem("cart");
-    const cart = stored ? JSON.parse(stored) : [];
+    const cart: CartItem[] = stored ? JSON.parse(stored) : [];
 
-    const existingProduct = cart.find((item: any) => item.id === id);
-    if (!existingProduct) {
-      cart.push(cartProduct);
-      localStorage.setItem("cart", JSON.stringify(cart));
+    const existingProduct = cart.find((item) => item.id === id);
+
+    let updatedCart: CartItem[];
+
+    if (existingProduct) {
+      updatedCart = cart.map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity + cartProduct.quantity }
+          : item
+      );
+    } else {
+      updatedCart = [...cart, cartProduct];
     }
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   return (

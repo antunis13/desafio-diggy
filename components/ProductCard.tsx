@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,12 +12,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 interface Product {
   id: string;
   name: string;
   description: string;
   priceCents: number;
   image: string;
+  quantity?: number;
 }
 
 interface ProductCardProps extends Product {
@@ -25,7 +38,8 @@ interface ProductCardProps extends Product {
     name: string,
     img: string,
     desc: string,
-    price: number
+    price: number,
+    quantity?: number
   ) => void;
   onDelete?: (id: string) => void;
 }
@@ -36,10 +50,14 @@ export default function ProductCard({
   image,
   description,
   priceCents,
+  quantity,
   isHomePage = true,
   onAdd,
   onDelete,
 }: ProductCardProps) {
+  const [counter, setCounter] = useState<number>(0);
+  const [opeDialog, setOpenDialog] = useState<boolean>(false);
+
   const price = (priceCents / 100).toFixed(2);
 
   return (
@@ -49,19 +67,77 @@ export default function ProductCard({
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <img src={image} alt={name} className="w-full h-full object-cover" />
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover border rounded-md"
+        />
         <CardDescription className="mt-4 mb-2">{description}</CardDescription>
         <p>R$ {price}</p>
       </CardContent>
       <CardFooter className="flex justify-end">
         {isHomePage ? (
-          <Button
-            onClick={() => onAdd?.(id, name, image, description, priceCents)}
-          >
-            Add to Cart
-          </Button>
+          <Dialog open={opeDialog} onOpenChange={setOpenDialog}>
+            <DialogTrigger asChild>
+              <Button
+                className="cursor-pointer"
+                onClick={() => setOpenDialog(true)}
+              >
+                Add item
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="hidden" />
+                Quantos items deseja adicionar ?
+              </DialogHeader>
+              <div className="flex justify-center items-center gap-4 py-4">
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => counter > 0 && setCounter(counter - 1)}
+                >
+                  -
+                </Button>
+                <span className="text-lg font-semibold min-w-[2rem] text-center">
+                  {counter}
+                </span>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => setCounter(counter + 1)}
+                >
+                  +
+                </Button>
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    className="cursor-pointer"
+                    type="button"
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    onAdd?.(id, name, image, description, priceCents, counter);
+                    setOpenDialog(false);
+                  }}
+                >
+                  Add to Cart
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         ) : (
-          <Button onClick={() => onDelete?.(id)}>Remove item</Button>
+          <div>
+            <span className="flex mb-4">Quantidade: {quantity}</span>
+            <Button className="cursor-pointer" onClick={() => onDelete?.(id)}>
+              Remove item
+            </Button>
+          </div>
         )}
       </CardFooter>
     </Card>
