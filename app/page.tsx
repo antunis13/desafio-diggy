@@ -5,9 +5,18 @@ import ProductCard from "@/components/ProductCard";
 import ScrollAreaHorizontal, { Category } from "@/components/ScrollHorizontal";
 
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import categorias from "@/data/products.json";
+import {
+  Dialog,
+  DialogHeader,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
 
 interface CartItem {
   id: string;
@@ -18,8 +27,22 @@ interface CartItem {
   quantity: number;
 }
 
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  priceCents: number;
+  image: string;
+}
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchByName, setSearchByName] = useState<Product | undefined>(
+    undefined
+  );
+  const [inputName, setInputName] = useState<string>("");
+
+  const categoryButtons = categorias;
 
   const addProducts = (
     id: string,
@@ -63,46 +86,97 @@ export default function Home() {
     setSelectedCategory(categoria.categoryName);
   };
 
-  const categoryButtons = categorias;
-
   return (
     <>
-      <section className="fixed right-0 top-20 flex justify-between items-center p-2 bg-white">
-        {
-          <ScrollAreaHorizontal
-            categorias={categoryButtons}
-            onSearch={searchByCategory}
-          />
-        }
+      <section className="fixed right-0 top-20 flex justify-between items-center p-2">
+        <ScrollAreaHorizontal
+          categorias={categoryButtons}
+          onSearch={searchByCategory}
+        />
+
         <Button
-          className="border rounded-lg p-2 ml-4"
-          onClick={() => setSelectedCategory(null)}
+          className="m-4"
+          variant="ghost"
+          onClick={() => {
+            setSelectedCategory(null);
+            setSearchByName(undefined);
+          }}
         >
-          <Search />
+          <X />
         </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="border rounded-lg p-2 ml-4">
+              <Search />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle hidden />
+            <DialogHeader>Busca por nome</DialogHeader>
+
+            <Input
+              type="text"
+              placeholder="Smoothie Sumer Vibes"
+              onChange={(e) => setInputName(e.target.value)}
+            />
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                const category = categorias.find((categoria) =>
+                  categoria.products.some(
+                    (product) => product.name === inputName
+                  )
+                );
+                const foundProduct = category?.products.find(
+                  (product) => product.name === inputName
+                );
+
+                setSearchByName(foundProduct);
+              }}
+            >
+              Pesquisar
+            </Button>
+          </DialogContent>
+        </Dialog>
       </section>
 
-      <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-        {categorias
-          .filter(
-            (categoria) =>
-              !selectedCategory || categoria.categoryName === selectedCategory
-          )
-          .map((categoria) =>
-            categoria.products.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                description={product.description}
-                image={product.image}
-                priceCents={product.priceCents}
-                isHomePage={true}
-                onAdd={addProducts}
-              />
-            ))
-          )}
-      </section>
+      {searchByName ? (
+        <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
+          <ProductCard
+            key={searchByName.id}
+            id={searchByName.id}
+            name={searchByName.name}
+            description={searchByName.description}
+            image={searchByName.image}
+            priceCents={searchByName.priceCents}
+            isHomePage={true}
+            onAdd={addProducts}
+          />
+        </section>
+      ) : (
+        <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
+          {categorias
+            .filter(
+              (categoria) =>
+                !selectedCategory || categoria.categoryName === selectedCategory
+            )
+            .map((categoria) =>
+              categoria.products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  description={product.description}
+                  image={product.image}
+                  priceCents={product.priceCents}
+                  isHomePage={true}
+                  onAdd={addProducts}
+                />
+              ))
+            )}
+        </section>
+      )}
     </>
   );
 }
