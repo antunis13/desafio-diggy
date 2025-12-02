@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,23 +11,41 @@ import {
 } from "@/components/ui/card";
 
 interface Product {
+  id: string;
   name: string;
   description: string;
   priceCents: number;
   image: string;
 }
 
+interface ProductCardProps extends Product {
+  isHomePage: boolean;
+  onAdd?: (
+    id: string,
+    name: string,
+    img: string,
+    desc: string,
+    price: number
+  ) => void;
+  onDelete?: (id: string) => void;
+}
+
 export default function ProductCard({
+  id,
   name,
   image,
   description,
   priceCents,
-}: Product) {
+  isHomePage = true,
+  onAdd,
+  onDelete,
+}: ProductCardProps) {
   const price = (priceCents / 100).toFixed(2);
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
+        <p className="hidden"> {id}</p>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
@@ -34,7 +54,15 @@ export default function ProductCard({
         <p>R$ {price}</p>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button>Add to Cart</Button>
+        {isHomePage ? (
+          <Button
+            onClick={() => onAdd?.(id, name, image, description, priceCents)}
+          >
+            Add to Cart
+          </Button>
+        ) : (
+          <Button onClick={() => onDelete?.(id)}>Remove item</Button>
+        )}
       </CardFooter>
     </Card>
   );
