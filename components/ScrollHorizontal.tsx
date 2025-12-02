@@ -19,7 +19,7 @@ export default function ScrollAreaHorizontalDemo({
       <div className="flex gap-2 p-4">
         {categorias.map((categoria, index) => (
           <Button
-            className="w-40"
+            className="w-40 bg-secondary hover:bg-[#8d57bd]"
             key={index}
             onClick={() => onSearch(categoria)}
           >

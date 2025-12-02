@@ -106,7 +106,7 @@ export default function Home() {
         </Button>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="border rounded-lg p-2 ml-4">
+            <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500">
               <Search />
             </Button>
           </DialogTrigger>

@@ -38,9 +38,9 @@ export default function Cart() {
 
   return (
     <>
-      <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-10 p-4">
+      <section className="flex flex-col grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-10 p-4">
         {cart.length === 0 ? (
-          <p>Your cart is empty</p>
+          <p>Seu carrinho está vazio</p>
         ) : (
           cart.map((item) => (
             <ProductCard
@@ -57,16 +57,20 @@ export default function Cart() {
           ))
         )}
       </section>
-      <footer className="fixed w-full bottom-0 flex justify-between items-center p-4 bg-white border shadow-[0_-4px_6px_rgba(0,0,0,0.1)]">
-        <div className="flex grid grid-cols-1">
-          <Label>Total da compra</Label>
-          <span>R$ {calculateTotal()}</span>
+      <footer className="fixed w-full bottom-0 flex flex-col sm:flex-row justify-between sm:items-center p-3 sm:p-4 bg-white border shadow-[0_-4px_6px_rgba(0,0,0,0.1)] gap-2 sm:gap-0">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+          <div className="flex flex-col">
+            <Label className="text-sm sm:text-base">Total da compra</Label>
+            <span className="text-lg sm:text-xl font-semibold">
+              R$ {calculateTotal()}
+            </span>
+          </div>
         </div>
 
-        <div>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:items-center">
           <Button
             variant="ghost"
-            className="mr-4 cursor-pointer"
+            className="text-sm sm:text-base cursor-pointer order-2 sm:order-1 sm:mr-4"
             onClick={() => {
               localStorage.clear();
               const cleanedCart = JSON.parse(
@@ -78,9 +82,16 @@ export default function Cart() {
             Limpar
           </Button>
           {cart.length === 0 ? (
-            <Button disabled>Cart is empty</Button>
+            <Button
+              disabled
+              className="bg-slate-400 text-sm sm:text-base order-1 sm:order-2"
+            >
+              Carrinho vazio
+            </Button>
           ) : (
-            <Button className="cursor-pointer">Efetuar a compra</Button>
+            <Button className="cursor-pointer bg-secondary hover:bg-[#8d57bd] text-sm sm:text-base order-1 sm:order-2">
+              Efetuar a compra
+            </Button>
           )}
         </div>
       </footer>

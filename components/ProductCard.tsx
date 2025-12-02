@@ -83,10 +83,10 @@ export default function ProductCard({
           <Dialog open={opeDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
               <Button
-                className="cursor-pointer"
+                className="cursor-pointer bg-secondary hover:bg-[#8d57bd]"
                 onClick={() => setOpenDialog(true)}
               >
-                Add item
+                Adicionar
               </Button>
             </DialogTrigger>
 
@@ -97,7 +97,7 @@ export default function ProductCard({
               </DialogHeader>
               <div className="flex justify-center items-center gap-4 py-4">
                 <Button
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-slate-400 hover:bg-slate-500"
                   onClick={() => {
                     if (counter > 1) {
                       const newCounter = counter - 1;
@@ -114,7 +114,7 @@ export default function ProductCard({
                   {counter}
                 </span>
                 <Button
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-slate-400 hover:bg-slate-500"
                   onClick={() => {
                     const newCounter = counter + 1;
                     setCounter(newCounter);
@@ -131,11 +131,11 @@ export default function ProductCard({
                     type="button"
                     variant="outline"
                   >
-                    Cancel
+                    Cancelar
                   </Button>
                 </DialogClose>
                 <Button
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-secondary hover:bg-[#8d57bd]"
                   onClick={() => {
                     onAdd?.(id, name, image, description, priceCents, counter);
                     setCounter(1);
@@ -143,7 +143,7 @@ export default function ProductCard({
                     setOpenDialog(false);
                   }}
                 >
-                  Add to Cart - R$ {totalPrice}
+                  Adicionar ao carrinho - R$ {totalPrice}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -151,8 +151,11 @@ export default function ProductCard({
         ) : (
           <div>
             <span className="flex mb-4">Quantidade: {quantity}</span>
-            <Button className="cursor-pointer" onClick={() => onDelete?.(id)}>
-              Remove item
+            <Button
+              className="cursor-pointer bg-secondary hover:bg-[#8d57bd]"
+              onClick={() => onDelete?.(id)}
+            >
+              Remover item
             </Button>
           </div>
         )}
