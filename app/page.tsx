@@ -1,6 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import ScrollAreaHorizontal, { Category } from "@/components/ScrollHorizontal";
+
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+
 import categorias from "@/data/products.json";
 
 interface CartItem {
@@ -13,6 +19,8 @@ interface CartItem {
 }
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const addProducts = (
     id: string,
     name: string,
@@ -51,22 +59,50 @@ export default function Home() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
+  const searchByCategory = (categoria: Category) => {
+    setSelectedCategory(categoria.categoryName);
+  };
+
+  const categoryButtons = categorias;
+
   return (
-    <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-10 p-4">
-      {categorias.map((categoria) =>
-        categoria.products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            description={product.description}
-            image={product.image}
-            priceCents={product.priceCents}
-            isHomePage={true}
-            onAdd={addProducts}
+    <>
+      <section className="fixed right-0 top-20 flex justify-between items-center p-2 bg-white">
+        {
+          <ScrollAreaHorizontal
+            categorias={categoryButtons}
+            onSearch={searchByCategory}
           />
-        ))
-      )}
-    </section>
+        }
+        <Button
+          className="border rounded-lg p-2 ml-4"
+          onClick={() => setSelectedCategory(null)}
+        >
+          <Search />
+        </Button>
+      </section>
+
+      <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
+        {categorias
+          .filter(
+            (categoria) =>
+              !selectedCategory || categoria.categoryName === selectedCategory
+          )
+          .map((categoria) =>
+            categoria.products.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                description={product.description}
+                image={product.image}
+                priceCents={product.priceCents}
+                isHomePage={true}
+                onAdd={addProducts}
+              />
+            ))
+          )}
+      </section>
+    </>
   );
 }
