@@ -55,8 +55,11 @@ export default function ProductCard({
   onAdd,
   onDelete,
 }: ProductCardProps) {
-  const [counter, setCounter] = useState<number>(0);
+  const [counter, setCounter] = useState<number>(1);
   const [opeDialog, setOpenDialog] = useState<boolean>(false);
+  const [totalPrice, setTotalPrice] = useState<string>(
+    ((priceCents / 100) * 1).toFixed(2)
+  );
 
   const price = (priceCents / 100).toFixed(2);
 
@@ -95,7 +98,15 @@ export default function ProductCard({
               <div className="flex justify-center items-center gap-4 py-4">
                 <Button
                   className="cursor-pointer"
-                  onClick={() => counter > 0 && setCounter(counter - 1)}
+                  onClick={() => {
+                    if (counter > 1) {
+                      const newCounter = counter - 1;
+                      setCounter(newCounter);
+                      setTotalPrice(
+                        ((priceCents / 100) * newCounter).toFixed(2)
+                      );
+                    }
+                  }}
                 >
                   -
                 </Button>
@@ -104,7 +115,11 @@ export default function ProductCard({
                 </span>
                 <Button
                   className="cursor-pointer"
-                  onClick={() => setCounter(counter + 1)}
+                  onClick={() => {
+                    const newCounter = counter + 1;
+                    setCounter(newCounter);
+                    setTotalPrice(((priceCents / 100) * newCounter).toFixed(2));
+                  }}
                 >
                   +
                 </Button>
@@ -123,10 +138,12 @@ export default function ProductCard({
                   className="cursor-pointer"
                   onClick={() => {
                     onAdd?.(id, name, image, description, priceCents, counter);
+                    setCounter(1);
+                    setTotalPrice(((priceCents / 100) * 1).toFixed(2));
                     setOpenDialog(false);
                   }}
                 >
-                  Add to Cart
+                  Add to Cart - R$ {totalPrice}
                 </Button>
               </DialogFooter>
             </DialogContent>
