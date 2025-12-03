@@ -41,4 +41,4 @@ npm install
 npm run dev
 ```
 
-A aplicação deve rodar em `http://localhost:3001`
+A aplicação deve rodar em `http://localhost:3000`
