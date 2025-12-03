@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -141,6 +142,7 @@ export default function ProductCard({
                     setCounter(1);
                     setTotalPrice(((priceCents / 100) * 1).toFixed(2));
                     setOpenDialog(false);
+                    toast.success("Adicionado ao carrinho");
                   }}
                 >
                   Adicionar ao carrinho - R$ {totalPrice}

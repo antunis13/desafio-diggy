@@ -4,6 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function Cart() {
   const [cart, setCart] = useState<Product[]>([]);
@@ -89,7 +90,17 @@ export default function Cart() {
               Carrinho vazio
             </Button>
           ) : (
-            <Button className="cursor-pointer bg-secondary hover:bg-[#8d57bd] text-sm sm:text-base order-1 sm:order-2">
+            <Button
+              className="cursor-pointer bg-secondary hover:bg-[#8d57bd] text-sm sm:text-base order-1 sm:order-2"
+              onClick={() => {
+                toast.success("Compra finalizada");
+                localStorage.clear();
+                const cleanedCart = JSON.parse(
+                  localStorage.getItem("cart") || "[]"
+                );
+                setCart(cleanedCart);
+              }}
+            >
               Efetuar a compra
             </Button>
           )}
