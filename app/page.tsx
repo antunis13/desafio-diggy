@@ -37,9 +37,7 @@ interface Product {
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchByName, setSearchByName] = useState<Product | undefined>(
-    undefined
-  );
+  const [searchByName, setSearchByName] = useState<Product[]>([]);
   const [inputName, setInputName] = useState<string>("");
 
   const categoryButtons = categorias;
@@ -86,42 +84,68 @@ export default function Home() {
     setSelectedCategory(categoria.categoryName);
   };
 
+  function normalize(text: string) {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // separa acentos
+      .replace(/[\u0300-\u036f]/g, "") // remove acentos
+      .replace(/\s+/g, " ") // troca múltiplos espaços por um só
+      .trim();
+  }
+
   return (
     <>
-      {searchByName ? (
+      {searchByName.length > 0 ? (
         <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-          <ProductCard
-            key={searchByName.id}
-            id={searchByName.id}
-            name={searchByName.name}
-            description={searchByName.description}
-            image={searchByName.image}
-            priceCents={searchByName.priceCents}
-            isHomePage={true}
-            onAdd={addProducts}
-          />
+          <Button
+            className="m-4 fixed bottom-0 left-0 cursor-pointer"
+            variant="ghost"
+            onClick={() => {
+              setSelectedCategory(null);
+              setSearchByName([]);
+            }}
+          >
+            <X />
+          </Button>
+
+          {searchByName.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              description={product.description}
+              image={product.image}
+              priceCents={product.priceCents}
+              isHomePage={true}
+              onAdd={addProducts}
+            />
+          ))}
         </section>
       ) : (
-        <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-          <div className=" fixed top-[10%] left-[10%] flex justify-center place-items-center p-1 bg-white border rounded-lg sm:left-[15%] md:top-[8%] md:left-[23%]  lg:top-[7%] lg:left-[25%] xl:top-[8%] xl:left-[30%] 2xl:top-[7%] xl:left-[35%]">
+        <section className="flex flex-col gap-4 place-items-center m-12 p-4">
+          <div
+            className="fixed top-12 left-1/2 -translate-x-1/2
+                  flex justify-center items-center
+                  p-1 bg-white border rounded-lg shadow-lg"
+          >
             <ScrollAreaHorizontal
               categorias={categoryButtons}
               onSearch={searchByCategory}
             />
 
             <Button
-              className="m-4"
+              className="m-4 cursor-pointer"
               variant="ghost"
               onClick={() => {
                 setSelectedCategory(null);
-                setSearchByName(undefined);
+                setSearchByName([]);
               }}
             >
               <X />
             </Button>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500">
+                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500 cursor-pointer">
                   <Search />
                 </Button>
               </DialogTrigger>
@@ -136,18 +160,17 @@ export default function Home() {
                 />
 
                 <Button
+                  className="cursor-pointer"
                   variant="outline"
                   onClick={() => {
-                    const category = categorias.find((categoria) =>
-                      categoria.products.some(
-                        (product) => product.name === inputName
-                      )
+                    const allProducts = categorias.flatMap(
+                      (categoria) => categoria.products
                     );
-                    const foundProduct = category?.products.find(
-                      (product) => product.name === inputName
+                    const foundProducts = allProducts.filter((product) =>
+                      normalize(product.name).includes(normalize(inputName))
                     );
 
-                    setSearchByName(foundProduct);
+                    setSearchByName(foundProducts);
                   }}
                 >
                   Pesquisar
