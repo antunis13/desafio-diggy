@@ -88,59 +88,6 @@ export default function Home() {
 
   return (
     <>
-      <section className="fixed right-0 top-20 flex justify-between items-center p-2">
-        <ScrollAreaHorizontal
-          categorias={categoryButtons}
-          onSearch={searchByCategory}
-        />
-
-        <Button
-          className="m-4"
-          variant="ghost"
-          onClick={() => {
-            setSelectedCategory(null);
-            setSearchByName(undefined);
-          }}
-        >
-          <X />
-        </Button>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500">
-              <Search />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle hidden />
-            <DialogHeader>Busca por nome</DialogHeader>
-
-            <Input
-              type="text"
-              placeholder="Smoothie Sumer Vibes"
-              onChange={(e) => setInputName(e.target.value)}
-            />
-
-            <Button
-              variant="outline"
-              onClick={() => {
-                const category = categorias.find((categoria) =>
-                  categoria.products.some(
-                    (product) => product.name === inputName
-                  )
-                );
-                const foundProduct = category?.products.find(
-                  (product) => product.name === inputName
-                );
-
-                setSearchByName(foundProduct);
-              }}
-            >
-              Pesquisar
-            </Button>
-          </DialogContent>
-        </Dialog>
-      </section>
-
       {searchByName ? (
         <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
           <ProductCard
@@ -156,25 +103,80 @@ export default function Home() {
         </section>
       ) : (
         <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-          {categorias
-            .filter(
-              (categoria) =>
-                !selectedCategory || categoria.categoryName === selectedCategory
-            )
-            .map((categoria) =>
-              categoria.products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  description={product.description}
-                  image={product.image}
-                  priceCents={product.priceCents}
-                  isHomePage={true}
-                  onAdd={addProducts}
+          <div className=" fixed top-[7%] flex justify-between items-center p-2 bg-white border rounded-lg">
+            <ScrollAreaHorizontal
+              categorias={categoryButtons}
+              onSearch={searchByCategory}
+            />
+
+            <Button
+              className="m-4"
+              variant="ghost"
+              onClick={() => {
+                setSelectedCategory(null);
+                setSearchByName(undefined);
+              }}
+            >
+              <X />
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500">
+                  <Search />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle hidden />
+                <DialogHeader>Busca por nome</DialogHeader>
+
+                <Input
+                  type="text"
+                  placeholder="Smoothie Sumer Vibes"
+                  onChange={(e) => setInputName(e.target.value)}
                 />
-              ))
-            )}
+
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const category = categorias.find((categoria) =>
+                      categoria.products.some(
+                        (product) => product.name === inputName
+                      )
+                    );
+                    const foundProduct = category?.products.find(
+                      (product) => product.name === inputName
+                    );
+
+                    setSearchByName(foundProduct);
+                  }}
+                >
+                  Pesquisar
+                </Button>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="mt-8">
+            {categorias
+              .filter(
+                (categoria) =>
+                  !selectedCategory ||
+                  categoria.categoryName === selectedCategory
+              )
+              .map((categoria) =>
+                categoria.products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    description={product.description}
+                    image={product.image}
+                    priceCents={product.priceCents}
+                    isHomePage={true}
+                    onAdd={addProducts}
+                  />
+                ))
+              )}
+          </div>
         </section>
       )}
     </>

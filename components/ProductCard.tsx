@@ -64,7 +64,7 @@ export default function ProductCard({
   const price = (priceCents / 100).toFixed(2);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md mt-4">
       <CardHeader>
         <p className="hidden"> {id}</p>
         <CardTitle>{name}</CardTitle>

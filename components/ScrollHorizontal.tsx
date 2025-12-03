@@ -15,7 +15,7 @@ export default function ScrollAreaHorizontalDemo({
   onSearch,
 }: ScrollAreaHorizontalProps) {
   return (
-    <ScrollArea className="w-96 h-[60px] rounded-md border whitespace-nowrap">
+    <ScrollArea className="w-96 h-[60px] rounded-md border whitespace-nowrap sm:w-24 md:w-32 lg:w-80 xl:w-96 2xl:w-96">
       <div className="flex gap-2 p-4">
         {categorias.map((categoria, index) => (
           <Button

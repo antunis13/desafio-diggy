@@ -38,7 +38,7 @@ export default function Cart() {
 
   return (
     <>
-      <section className="flex flex-col grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-10 p-4">
+      <section className="flex flex-col grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-10 p-4 sm:pb-20 md:pb-16 lg:pb-14">
         {cart.length === 0 ? (
           <p>Seu carrinho está vazio</p>
         ) : (
