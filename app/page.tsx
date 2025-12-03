@@ -58,6 +58,7 @@ export default function Home() {
 
   const searchByCategory = (categoria: Category) => {
     setSelectedCategory(categoria.categoryName);
+    setSearchByName([]);
   };
 
   const clearFilters = () => {
@@ -75,6 +76,7 @@ export default function Home() {
       normalize(product.name).includes(normalize(inputName))
     );
     setSearchByName(foundProducts);
+    setSelectedCategory(null);
   };
 
   function normalize(text: string) {
