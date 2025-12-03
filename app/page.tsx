@@ -3,26 +3,13 @@
 import { useState } from "react";
 
 import ProductCard from "@/components/ProductCard";
-import ScrollAreaHorizontal from "@/components/ScrollHorizontal";
+import Toolbar from "@/components/Toolbar";
 
 import { Category } from "@/types/category";
 import { Product } from "@/types/products";
 import { CartItem } from "@/types/cart";
 
-import { Search, X } from "lucide-react";
-
 import categorias from "@/data/products.json";
-
-import {
-  Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -73,6 +60,23 @@ export default function Home() {
     setSelectedCategory(categoria.categoryName);
   };
 
+  const clearFilters = () => {
+    setSelectedCategory(null);
+    setSearchByName([]);
+  };
+
+  const handleInputChange = (value: string) => {
+    setInputName(value);
+  };
+
+  const performSearch = () => {
+    const allProducts = categorias.flatMap((categoria) => categoria.products);
+    const foundProducts = allProducts.filter((product) =>
+      normalize(product.name).includes(normalize(inputName))
+    );
+    setSearchByName(foundProducts);
+  };
+
   function normalize(text: string) {
     return text
       .toLowerCase()
@@ -86,63 +90,14 @@ export default function Home() {
     <>
       {searchByName.length > 0 ? (
         <section className="flex flex-col gap-4 place-items-center m-12 p-4">
-          <div
-            className="fixed top-14 left-1/2 -translate-x-1/2
-                  flex justify-center items-center
-                  p-1 bg-white border rounded-lg shadow-lg"
-          >
-            <ScrollAreaHorizontal
-              categorias={categoryButtons}
-              onSearch={searchByCategory}
-            />
-
-            <Button
-              className="m-4 cursor-pointer"
-              variant="ghost"
-              onClick={() => {
-                setSelectedCategory(null);
-                setSearchByName([]);
-              }}
-            >
-              <X />
-            </Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500 cursor-pointer">
-                  <Search />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle hidden />
-                <DialogHeader>Busca por nome</DialogHeader>
-
-                <Input
-                  type="text"
-                  placeholder="Smoothie Sumer Vibes"
-                  onChange={(e) => setInputName(e.target.value)}
-                />
-
-                <DialogClose asChild>
-                  <Button
-                    className="cursor-pointer"
-                    variant="outline"
-                    onClick={() => {
-                      const allProducts = categorias.flatMap(
-                        (categoria) => categoria.products
-                      );
-                      const foundProducts = allProducts.filter((product) =>
-                        normalize(product.name).includes(normalize(inputName))
-                      );
-
-                      setSearchByName(foundProducts);
-                    }}
-                  >
-                    Pesquisar
-                  </Button>
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Toolbar
+            categoryButtons={categoryButtons}
+            onCategorySelect={searchByCategory}
+            onClearFilters={clearFilters}
+            inputName={inputName}
+            onInputChange={handleInputChange}
+            onSearch={performSearch}
+          />
 
           {searchByName.map((product) => (
             <ProductCard
@@ -159,62 +114,14 @@ export default function Home() {
         </section>
       ) : (
         <section className="flex flex-col gap-4 place-items-center m-12 p-4">
-          <div
-            className="fixed top-14 left-1/2 -translate-x-1/2
-                  flex justify-center items-center
-                  p-1 bg-white border rounded-lg shadow-lg"
-          >
-            <ScrollAreaHorizontal
-              categorias={categoryButtons}
-              onSearch={searchByCategory}
-            />
-
-            <Button
-              className="m-4 cursor-pointer"
-              variant="ghost"
-              onClick={() => {
-                setSelectedCategory(null);
-                setSearchByName([]);
-              }}
-            >
-              <X />
-            </Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500 cursor-pointer">
-                  <Search />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle hidden />
-                <DialogHeader>Busca por nome</DialogHeader>
-
-                <Input
-                  type="text"
-                  placeholder="Smoothie Sumer Vibes"
-                  onChange={(e) => setInputName(e.target.value)}
-                />
-                <DialogClose asChild>
-                  <Button
-                    className="cursor-pointer"
-                    variant="outline"
-                    onClick={() => {
-                      const allProducts = categorias.flatMap(
-                        (categoria) => categoria.products
-                      );
-                      const foundProducts = allProducts.filter((product) =>
-                        normalize(product.name).includes(normalize(inputName))
-                      );
-
-                      setSearchByName(foundProducts);
-                    }}
-                  >
-                    Pesquisar
-                  </Button>
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Toolbar
+            categoryButtons={categoryButtons}
+            onCategorySelect={searchByCategory}
+            onClearFilters={clearFilters}
+            inputName={inputName}
+            onInputChange={handleInputChange}
+            onSearch={performSearch}
+          />
           <div className="mt-8">
             {categorias
               .filter(

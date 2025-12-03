@@ -43,6 +43,14 @@ export default function ProductCard({
 
   const price = (priceCents / 100).toFixed(2);
 
+  const handleAdd = () => {
+    onAdd?.(id, name, image, description, priceCents, counter);
+    setCounter(1);
+    setTotalPrice(((priceCents / 100) * 1).toFixed(2));
+    setOpenDialog(false);
+    toast.success("Adicionado ao carrinho");
+  };
+
   return (
     <Card className="w-full max-w-md mt-4">
       <CardHeader>
@@ -116,13 +124,7 @@ export default function ProductCard({
                 </DialogClose>
                 <Button
                   className="cursor-pointer bg-secondary hover:bg-[#8d57bd]"
-                  onClick={() => {
-                    onAdd?.(id, name, image, description, priceCents, counter);
-                    setCounter(1);
-                    setTotalPrice(((priceCents / 100) * 1).toFixed(2));
-                    setOpenDialog(false);
-                    toast.success("Adicionado ao carrinho");
-                  }}
+                  onClick={() => handleAdd()}
                 >
                   Adicionar ao carrinho - R$ {totalPrice}
                 </Button>
