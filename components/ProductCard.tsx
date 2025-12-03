@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   Dialog,
   DialogClose,
@@ -23,27 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  priceCents: number;
-  image: string;
-  quantity?: number;
-}
-
-interface ProductCardProps extends Product {
-  isHomePage: boolean;
-  onAdd?: (
-    id: string,
-    name: string,
-    img: string,
-    desc: string,
-    price: number,
-    quantity?: number
-  ) => void;
-  onDelete?: (id: string) => void;
-}
+import { ProductCardProps } from "@/types/card";
 
 export default function ProductCard({
   id,

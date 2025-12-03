@@ -1,39 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import ProductCard from "@/components/ProductCard";
-import ScrollAreaHorizontal, { Category } from "@/components/ScrollHorizontal";
 
-import { Button } from "@/components/ui/button";
+import ProductCard from "@/components/ProductCard";
+import ScrollAreaHorizontal from "@/components/ScrollHorizontal";
+
+import { Category } from "@/types/category";
+import { Product } from "@/types/products";
+import { CartItem } from "@/types/cart";
+
 import { Search, X } from "lucide-react";
 
 import categorias from "@/data/products.json";
+
 import {
   Dialog,
   DialogHeader,
   DialogContent,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
-
-interface CartItem {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: number;
-  quantity: number;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  priceCents: number;
-  image: string;
-}
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -96,35 +85,9 @@ export default function Home() {
   return (
     <>
       {searchByName.length > 0 ? (
-        <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-          <Button
-            className="m-4 fixed bottom-0 left-0 cursor-pointer"
-            variant="ghost"
-            onClick={() => {
-              setSelectedCategory(null);
-              setSearchByName([]);
-            }}
-          >
-            <X />
-          </Button>
-
-          {searchByName.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              description={product.description}
-              image={product.image}
-              priceCents={product.priceCents}
-              isHomePage={true}
-              onAdd={addProducts}
-            />
-          ))}
-        </section>
-      ) : (
         <section className="flex flex-col gap-4 place-items-center m-12 p-4">
           <div
-            className="fixed top-12 left-1/2 -translate-x-1/2
+            className="fixed top-14 left-1/2 -translate-x-1/2
                   flex justify-center items-center
                   p-1 bg-white border rounded-lg shadow-lg"
           >
@@ -159,22 +122,96 @@ export default function Home() {
                   onChange={(e) => setInputName(e.target.value)}
                 />
 
-                <Button
-                  className="cursor-pointer"
-                  variant="outline"
-                  onClick={() => {
-                    const allProducts = categorias.flatMap(
-                      (categoria) => categoria.products
-                    );
-                    const foundProducts = allProducts.filter((product) =>
-                      normalize(product.name).includes(normalize(inputName))
-                    );
+                <DialogClose asChild>
+                  <Button
+                    className="cursor-pointer"
+                    variant="outline"
+                    onClick={() => {
+                      const allProducts = categorias.flatMap(
+                        (categoria) => categoria.products
+                      );
+                      const foundProducts = allProducts.filter((product) =>
+                        normalize(product.name).includes(normalize(inputName))
+                      );
 
-                    setSearchByName(foundProducts);
-                  }}
-                >
-                  Pesquisar
+                      setSearchByName(foundProducts);
+                    }}
+                  >
+                    Pesquisar
+                  </Button>
+                </DialogClose>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {searchByName.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              description={product.description}
+              image={product.image}
+              priceCents={product.priceCents}
+              isHomePage={true}
+              onAdd={addProducts}
+            />
+          ))}
+        </section>
+      ) : (
+        <section className="flex flex-col gap-4 place-items-center m-12 p-4">
+          <div
+            className="fixed top-14 left-1/2 -translate-x-1/2
+                  flex justify-center items-center
+                  p-1 bg-white border rounded-lg shadow-lg"
+          >
+            <ScrollAreaHorizontal
+              categorias={categoryButtons}
+              onSearch={searchByCategory}
+            />
+
+            <Button
+              className="m-4 cursor-pointer"
+              variant="ghost"
+              onClick={() => {
+                setSelectedCategory(null);
+                setSearchByName([]);
+              }}
+            >
+              <X />
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="border rounded-lg p-2 ml-2 mr-4 bg-slate-400 hover:bg-slate-500 cursor-pointer">
+                  <Search />
                 </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle hidden />
+                <DialogHeader>Busca por nome</DialogHeader>
+
+                <Input
+                  type="text"
+                  placeholder="Smoothie Sumer Vibes"
+                  onChange={(e) => setInputName(e.target.value)}
+                />
+                <DialogClose asChild>
+                  <Button
+                    className="cursor-pointer"
+                    variant="outline"
+                    onClick={() => {
+                      const allProducts = categorias.flatMap(
+                        (categoria) => categoria.products
+                      );
+                      const foundProducts = allProducts.filter((product) =>
+                        normalize(product.name).includes(normalize(inputName))
+                      );
+
+                      setSearchByName(foundProducts);
+                    }}
+                  >
+                    Pesquisar
+                  </Button>
+                </DialogClose>
               </DialogContent>
             </Dialog>
           </div>

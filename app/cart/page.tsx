@@ -1,22 +1,16 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-export default function Cart() {
-  const [cart, setCart] = useState<Product[]>([]);
+import { ProductCart } from "@/types/cart";
 
-  interface Product {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-    description: string;
-    quantity: number;
-  }
+export default function Cart() {
+  const [cart, setCart] = useState<ProductCart[]>([]);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -24,7 +18,7 @@ export default function Cart() {
   }, []);
 
   const deleteProduct = (id: string) => {
-    const updatedCart = cart.filter((item: Product) => item.id !== id);
+    const updatedCart = cart.filter((item: ProductCart) => item.id !== id);
 
     setCart(updatedCart);
 

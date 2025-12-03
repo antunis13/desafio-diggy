@@ -1,16 +1,9 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "./ui/button";
 
-export interface Category {
-  categoryName: string;
-}
+import { ScrollAreaHorizontalProps } from "@/types/scrollArea";
 
-interface ScrollAreaHorizontalProps {
-  categorias: Category[];
-  onSearch: (categoria: Category) => void;
-}
-
-export default function ScrollAreaHorizontalDemo({
+export default function ScrollAreaHorizontal({
   categorias,
   onSearch,
 }: ScrollAreaHorizontalProps) {
