@@ -103,7 +103,7 @@ export default function Home() {
         </section>
       ) : (
         <section className="flex flex-col grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 place-items-center m-12 p-4">
-          <div className=" fixed top-[7%] flex justify-between items-center p-2 bg-white border rounded-lg">
+          <div className=" fixed top-[10%] left-[10%] flex justify-center place-items-center p-1 bg-white border rounded-lg sm:left-[15%] md:top-[8%] md:left-[23%]  lg:top-[7%] lg:left-[25%] xl:top-[8%] xl:left-[30%] 2xl:top-[7%] xl:left-[35%]">
             <ScrollAreaHorizontal
               categorias={categoryButtons}
               onSearch={searchByCategory}
